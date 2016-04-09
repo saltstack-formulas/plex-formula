@@ -1,0 +1,7 @@
+name: plex
+os: CentOS, Fedora
+os_family: RedHat
+version: 201604
+release: 1
+summary: Formula for installing Plex Media Server
+description: Formula for installing Plex Media Server
