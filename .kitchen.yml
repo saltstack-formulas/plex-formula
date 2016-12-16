@@ -7,9 +7,16 @@ platforms:
       image: corux/centos7-salt
       privileged: True
       run_command: /usr/sbin/init
+  - name: ubuntu-16.04
+    driver_config:
+      privileged: True
+      run_command: /sbin/init
+
 
 provisioner:
   name: salt_solo
+  log_level: debug
+  require_chef: true
   formula: plex
   pillars-from-files:
     plex.sls: pillar.example
