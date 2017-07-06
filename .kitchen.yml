@@ -12,10 +12,8 @@ platforms:
       privileged: True
       run_command: /sbin/init
 
-
 provisioner:
   name: salt_solo
-  log_level: debug
   require_chef: true
   formula: plex
   pillars-from-files:
