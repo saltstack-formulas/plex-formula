@@ -7,14 +7,14 @@
 {% set arch = x86 if salt['grains.get']('cpuarch') == 'x86_64' else 'i386' %}
 
 {% if 'latest' in plex.version %}
-    {# https://plex.tv/downloads/latest/5?&build=linux-x86_64&distro=debian #}
-    {# set url =  'https://plex.tv/downloads/latest/5?&build=linux-x86_64&distro=debian' #}
-    {% set latest = salt['cmd.run']('curl -s -H "application/json" https://plex.tv/pms/downloads/5.json')|tojson %}
+    {# Windows:        https://plex.tv/downloads/latest/5?&build=windows-x86&distro=windows #}
+    {# Mac:            https://plex.tv/downloads/latest/5?&build=darwin-x86_64&distro=macos #}
+    {# FreeBSD:        https://plex.tv/downloads/latest/5?&build=freebsd-x86_64&distro=freebsd #}
+    {# Ubuntu/Debian:  https://plex.tv/downloads/latest/5?&build=linux-x86_64&distro=debian #}
 
-    {% set url = salt['cmd.run']('jq -MRrc --slurp \'.computer.Linux.releases[]|'|safe +
-            'select(.build|contains("'|safe + salt['grains.get']('cpuarch') + '"))|'|safe +
-            'select(.label|contains("'|safe + salt['grains.get']('os_family') + '")).url\''|safe
-            , stdin=latest, bufsize=-1) %}
+    {% set url =  'https://plex.tv/downloads/latest/5?' +
+                   'build=' + salt['grains.get']('kernel')|lower + '-' + salt['grains.get']('cpuarch') +
+                   '&distro=' + salt['grains.get']('os_family')|lower %}
 {% else %}
 
     {% set url = 'https://downloads.plex.tv/plex-media-server/' + plex.version + '/plexmediaserver' + j1 + plex.version + j2 + arch + extension %}
